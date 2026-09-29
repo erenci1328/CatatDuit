@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catat Duit</title>
+<style>
+*{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial}
+body{margin:0;background:#1a1d26;color:#fff}
+.container{max-width:420px;margin:auto;padding:16px}
+#cover{position:fixed;inset:0;background:#1a1d26;z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px;transition:.6s}
+#cover.hide{transform:translateY(-100%);opacity:0}
+.cover-box{text-align:center;max-width:360px}
+.cover-logo{width:120px;height:120px;border-radius:28px;box-shadow:0 10px 30px rgba(59,130,246,.4);margin-bottom:16px;background:#2a2e3a;object-fit:cover}
+.quote{margin:20px 0;background:rgba(255,255,255,.06);border-left:4px solid #3b82f6;padding:14px;border-radius:10px;font-style:italic;color:#d1d5db;line-height:1.5;min-height:70px}
+.quote b{color:#22c55e}
+#enterBtn{width:100%;background:#3b82f6;border:none;color:#fff;padding:16px;border-radius:14px;font-weight:bold;font-size:16px}
+.card{background:#2a2e3a;border-radius:18px;padding:16px;margin-top:16px}
+.balance{text-align:center}.balance h1{color:#3b82f6;margin:6px 0}
+.income-expense{display:flex;justify-content:space-between;font-size:12px;margin-top:8px;color:#9ca3af}
+label{font-size:13px;margin-top:12px;display:block;font-weight:bold;color:#d1d5db}
+input,select{width:100%;padding:13px;margin-top:6px;border-radius:12px;border:1px solid #3a3f50;background:#1f2330;color:#fff;font-size:14px}
+.primary{width:100%;background:#3b82f6;border:none;color:#fff;padding:14px;border-radius:12px;margin-top:14px;font-weight:bold}
+.flex{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.type-toggle{display:flex;gap:8px;margin-top:8px}
+.type-toggle button{flex:1;padding:11px;border-radius:12px;border:1px solid #3a3f50;background:#1f2330;color:#fff}
+.type-toggle button.active{background:#3b82f6;border-color:#3b82f6}
+.item{padding:16px 0;border-bottom:1px solid #2e3343}
+.item-top{display:flex;align-items:center;gap:12px}
+.icon-box{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:21px}
+.item-name{font-weight:700;font-size:15px}
+.item-sub{font-size:12px;color:#9ca3af;margin-top:2px}
+.item-bottom{display:flex;align-items:center;gap:10px;margin-top:10px;margin-left:58px}
+.item-bottom b{font-size:15px}
+.item-bottom button{border:none;padding:7px 14px;border-radius:10px;font-size:12px;font-weight:700}
+.edit{background:rgba(59,130,246,.15);color:#60a5fa}
+.delete{background:rgba(239,68,68,.15);color:#f87171}
+.progress-bg{background:#1f2330;height:10px;border-radius:10px;margin-top:12px;overflow:hidden}
+.progress{height:10px;width:0%;background:#22c55e;transition:.3s}
+.progress.over{background:#ef4444}
+#legend{font-size:12px;margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
+</style>
+</head>
+<body>
+<div id="cover">
+  <div class="cover-box">
+    <img src="https://i.imgur.com/dCvknQB.jpeg" class="cover-logo">
+    <h1>Catat<span style="color:#3b82f6">Duit</span></h1>
+    <p style="color:#9ca3af;font-size:14px;margin:4px 0 0">Catat dulu, nyesel belakangan jangan.</p>
+    <div class="quote" id="quoteBox"></div>
+    <button id="enterBtn">Masuk ke Catat Duit →</button>
+  </div>
+</div>
+<div class="container">
+<header><h2 style="margin:0">CatatDuit</h2><p id="todayText" style="color:#9ca3af;font-size:13px;margin:2px 0 0"></p></header>
+<div class="card balance"><small style="letter-spacing:1px;color:#9ca3af">TOTAL SALDO</small><h1 id="totalBalance">Rp 0</h1><div class="income-expense"><span id="incomeText"></span><span id="expenseText"></span></div></div>
+<div class="card"><h3 style="margin:0 0 12px">Budget Bulanan</h3><div class="flex"><input type="number" id="budgetInput" placeholder="500000"><button id="setBudgetBtn" style="padding:13px 18px;background:#22c55e;border:none;color:#fff;border-radius:12px;font-weight:bold">Set</button></div><div class="progress-bg"><div id="progressBar" class="progress"></div></div><small id="budgetInfo" style="color:#9ca3af"></small></div>
+<div class="card"><h3 id="formTitle" style="margin:0 0 12px">Tambah Transaksi</h3><div class="type-toggle"><button id="typeExpense" class="active">Pengeluaran</button><button id="typeIncome">Pemasukan</button></div><label>Nama</label><input type="text" id="nameInput" placeholder="Nasgor"><label>Jumlah</label><input type="number" id="amountInput" placeholder="25000"><label>Tanggal</label><input type="date" id="dateInput"><label>Kategori</label><select id="categoryInput"><option>Makanan</option><option>Minuman</option><option>Transport</option><option>Hiburan</option><option>Belanja</option><option>Gaji</option><option>Tabungan</option><option>Lainnya</option></select><button id="addBtn" class="primary">Tambah</button><button id="cancelBtn" class="primary" style="display:none;background:#64748b;margin-top:8px">Batal Edit</button></div>
+<div class="card"><div class="flex"><h3 style="margin:0">Transaksi</h3><span id="count" style="font-size:12px;color:#9ca3af"></span></div><input type="text" id="searchInput" placeholder="🔍 Cari..." style="margin-top:12px"><div id="list" style="margin-top:8px"></div></div>
+<div class="card"><h3 style="margin:0 0 12px">Pengeluaran per Kategori</h3><canvas id="chart" width="300" height="300"></canvas><div id="legend"></div></div>
+</div>
+<script>
+const quotes=[`Bukan pelit, ini namanya <b>sayang masa depan.</b>`,`Checkout sekarang, <b>nangisnya di akhir bulan.</b>`,`Gajimu bukan kurang, <b>jajanmu aja kebanyakan gaya.</b>`];
+document.getElementById('quoteBox').innerHTML=`"${quotes[Math.floor(Math.random()*quotes.length)]}"`;
+document.getElementById('todayText').textContent=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long'});
+document.getElementById('enterBtn').onclick=()=>{document.getElementById('cover').classList.add('hide');setTimeout(()=>document.getElementById('cover').style.display='none',600)};
+const categoryConfig={Makanan:{icon:'🍜',color:'#f59e0b',bg:'rgba(245,158,11,.18)'},Minuman:{icon:'🥤',color:'#06b6d4',bg:'rgba(6,182,214,.18)'},Transport:{icon:'🚌',color:'#3b82f6',bg:'rgba(59,130,246,.18)'},Hiburan:{icon:'🎮',color:'#8b5cf6',bg:'rgba(139,92,246,.18)'},Belanja:{icon:'🛍️',color:'#ec4899',bg:'rgba(236,72,153,.18)'},Gaji:{icon:'💰',color:'#22c55e',bg:'rgba(34,197,94,.18)'},Tabungan:{icon:'🏦',color:'#10b981',bg:'rgba(16,185,129,.18)'},Lainnya:{icon:'📦',color:'#6b7280',bg:'rgba(107,114,128,.18)'}};
+function getCatConf(c){return categoryConfig[c]||categoryConfig['Lainnya']}
+let transactions=JSON.parse(localStorage.getItem('catatduit'))||JSON.parse(localStorage.getItem('dompetku'))||[];let budget=Number(localStorage.getItem('budget')||0);let editId=null;let currentType='expense';
+const nameInput=document.getElementById('nameInput'),amountInput=document.getElementById('amountInput'),dateInput=document.getElementById('dateInput'),categoryInput=document.getElementById('categoryInput'),addBtn=document.getElementById('addBtn'),cancelBtn=document.getElementById('cancelBtn'),listEl=document.getElementById('list'),totalEl=document.getElementById('totalBalance'),incomeText=document.getElementById('incomeText'),expenseText=document.getElementById('expenseText'),countEl=document.getElementById('count'),searchInput=document.getElementById('searchInput'),chart=document.getElementById('chart'),legend=document.getElementById('legend'),budgetInput=document.getElementById('budgetInput'),progressBar=document.getElementById('progressBar'),budgetInfo=document.getElementById('budgetInfo'),formTitle=document.getElementById('formTitle');
+dateInput.valueAsDate=new Date();if(budget)budgetInput.value=budget;
+function save(){localStorage.setItem('catatduit',JSON.stringify(transactions));localStorage.setItem('budget',budget)}
+function rupiah(n){return'Rp '+Number(n).toLocaleString('id-ID')}
+function setType(t){currentType=t;document.getElementById('typeExpense').classList.toggle('active',t==='expense');document.getElementById('typeIncome').classList.toggle('active',t==='income')}
+document.getElementById('typeExpense').onclick=()=>setType('expense');document.getElementById('typeIncome').onclick=()=>setType('income');
+function render(){const q=searchInput.value.toLowerCase();let filtered=transactions.filter(x=>x.name.toLowerCase().includes(q)||x.category.toLowerCase().includes(q));filtered.sort((a,b)=>new Date(b.date)-new Date(a.date));listEl.innerHTML='';let income=0,expense=0;transactions.forEach(t=>{if(t.type==='income')income+=Number(t.amount);else expense+=Number(t.amount)});filtered.forEach(t=>{const d=new Date(t.date).toLocaleDateString('id-ID',{day:'2-digit',month:'short'});const conf=getCatConf(t.category);const div=document.createElement('div');div.className='item';div.innerHTML=`<div class="item-top"><div class="icon-box" style="background:${conf.bg}">${conf.icon}</div><div><div class="item-name">${t.name}</div><div class="item-sub">${d} • ${t.category}</div></div></div><div class="item-bottom"><b>${rupiah(t.amount)}</b><button class="edit" onclick="editTrans(${t.id})">Edit</button><button class="delete" onclick="del(${t.id})">Buang</button></div>`;listEl.appendChild(div)});countEl.textContent=`${filtered.length} transaksi`;totalEl.textContent=rupiah(income-expense);incomeText.textContent='Masuk: '+rupiah(income);expenseText.textContent='Keluar: '+rupiah(expense);if(budget>0){const perc=Math.min((expense/budget)*100,100);progressBar.style.width=perc+'%';progressBar.classList.toggle('over',expense>budget);budgetInfo.textContent=`Terpakai ${Math.round(perc)}% dari ${rupiah(budget)}`}drawChart();save()}
+function drawChart(){const ctx=chart.getContext('2d');ctx.clearRect(0,0,300,300);const cats={};transactions.filter(t=>t.type==='expense').forEach(t=>{cats[t.category]=(cats[t.category]||0)+Number(t.amount)});const total=Object.values(cats).reduce((a,b)=>a+b,0)||1;let start=0;legend.innerHTML='';Object.keys(cats).forEach(l=>{const conf=getCatConf(l);const angle=(cats[l]/total)*Math.PI*2;ctx.beginPath();ctx.moveTo(150,150);ctx.arc(150,150,120,start,start+angle);ctx.fillStyle=conf.color;ctx.fill();start+=angle;legend.innerHTML+=`<span style="color:${conf.color}">● ${l}: ${rupiah(cats[l])}</span> `})}
+window.del=(id)=>{if(confirm('Yakin mau buang?')){transactions=transactions.filter(t=>t.id!==id);render()}};
+window.editTrans=(id)=>{const t=transactions.find(x=>x.id===id);if(!t)return;editId=id;nameInput.value=t.name;amountInput.value=t.amount;categoryInput.value=t.category;dateInput.value=t.date;setType(t.type);formTitle.textContent='Edit Transaksi';addBtn.textContent='Update';cancelBtn.style.display='block';window.scrollTo({top:0,behavior:'smooth'})};
+addBtn.onclick=()=>{if(!nameInput.value||!amountInput.value||!dateInput.value)return alert('Lengkapi dulu!');if(editId){const idx=transactions.findIndex(x=>x.id===editId);if(idx>-1)transactions[idx]={...transactions[idx],name:nameInput.value,amount:parseFloat(amountInput.value),category:categoryInput.value,date:dateInput.value,type:currentType};editId=null;formTitle.textContent='Tambah Transaksi';addBtn.textContent='Tambah';cancelBtn.style.display='none'}else{transactions.push({id:Date.now(),name:nameInput.value,amount:parseFloat(amountInput.value),category:categoryInput.value,date:dateInput.value,type:currentType})}nameInput.value='';amountInput.value='';dateInput.valueAsDate=new Date();render()};
+cancelBtn.onclick=()=>{editId=null;formTitle.textContent='Tambah Transaksi';addBtn.textContent='Tambah';cancelBtn.style.display='none'};
+document.getElementById('setBudgetBtn').onclick=()=>{budget=Number(budgetInput.value)||0;render()};searchInput.oninput=render;render();
+</script>
+</body>
+                    </html>
